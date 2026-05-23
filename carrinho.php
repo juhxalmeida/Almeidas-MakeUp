@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 include("conexao.php");
@@ -43,24 +44,11 @@ if(isset($_GET['comprar_item'])){
 
     if($usuario['moedas'] >= $preco){
 
-        $novoSaldo = $usuario['moedas'] - $preco;
+        $_SESSION['valor_compra'] = $preco;
 
-        $update = "UPDATE usuarios
-                   SET moedas = $novoSaldo
-                   WHERE id = $id";
+        $_SESSION['indice_compra'] = $indice;
 
-        $conn->query($update);
-
-        unset($_SESSION['carrinho'][$indice]);
-
-        $_SESSION['carrinho'] = array_values($_SESSION['carrinho']);
-
-        echo "
-        <script>
-        alert('Produto comprado');
-        window.location='carrinho.php';
-        </script>
-        ";
+        header("Location: comprar.php");
 
     }else{
 
@@ -80,150 +68,152 @@ if(isset($_GET['comprar_item'])){
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>Carrinho</title>
+    <title>Carrinho</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<header>
+    <header>
 
-<div class="topo-logo">
+        <div class="topo-logo">
 
-<img src="imagens/logo.jpeg"
-class="logo-header">
+            <img
+                src="imagens/logo.jpeg"
+                class="logo-header"
+            >
 
-<h1>Seu Carrinho</h1>
-
-</div>
-
-<a href="index.php">
-Voltar
-</a>
-
-</header>
-
-<section class="cards">
-
-<?php
-
-if(isset($_SESSION['carrinho']) &&
-count($_SESSION['carrinho']) > 0){
-
-    foreach($_SESSION['carrinho'] as $indice => $item){
-
-        $imagem = "";
-
-        if($item['produto'] == "Base"){
-            $imagem = "imagens/base.jpeg";
-        }
-
-        elseif($item['produto'] == "Corretivo"){
-            $imagem = "imagens/corretivo.jpeg";
-        }
-
-        elseif($item['produto'] == "Gloss"){
-            $imagem = "imagens/gloss.jpeg";
-        }
-
-        elseif($item['produto'] == "Po Compacto"){
-            $imagem = "imagens/po.jpeg";
-        }
-
-        elseif($item['produto'] == "Sabonete Facial"){
-            $imagem = "imagens/sabonete.jpeg";
-        }
-
-        elseif($item['produto'] == "Hidratante Facial"){
-            $imagem = "imagens/hidratante.jpeg";
-        }
-
-        elseif($item['produto'] == "Esfoliante Facial"){
-            $imagem = "imagens/esfoliante.jpeg";
-        }
-
-        echo "
-
-        <div class='card'>
-
-        <img src='$imagem'
-        class='produto-img'>
-
-        <h3>".$item['produto']."</h3>
-
-        <p>".$item['preco']." moedas</p>
-
-        <div class='botoes-produto'>
-
-        <a href='carrinho.php?comprar_item=$indice'>
-
-        <button>
-
-        Comprar Produto
-
-        </button>
-
-        </a>
-
-        <a href='carrinho.php?remover=$indice'>
-
-        <button class='comprar-agora'>
-
-        Remover
-
-        </button>
-
-        </a>
+            <h1>Seu Carrinho</h1>
 
         </div>
 
-        </div>
+        <a href="index.php">
+            Voltar
+        </a>
 
-        ";
+    </header>
 
-        $total += $item['preco'];
-    }
+    <section class="cards">
 
-}else{
+        <?php
 
-    echo "<h2>Carrinho vazio</h2>";
-}
+        if(isset($_SESSION['carrinho']) &&
+        count($_SESSION['carrinho']) > 0){
 
-?>
+            foreach($_SESSION['carrinho'] as $indice => $item){
 
-</section>
+                $imagem = "";
 
-<section class="quiz">
+                if($item['produto'] == "Base"){
+                    $imagem = "imagens/base.jpeg";
+                }
 
-<?php
+                elseif($item['produto'] == "Corretivo"){
+                    $imagem = "imagens/corretivo.jpeg";
+                }
 
-if(isset($_SESSION['carrinho']) &&
-count($_SESSION['carrinho']) > 0){
+                elseif($item['produto'] == "Gloss"){
+                    $imagem = "imagens/gloss.jpeg";
+                }
 
-    echo "
+                elseif($item['produto'] == "Po Compacto"){
+                    $imagem = "imagens/po.jpeg";
+                }
 
-    <h2>Total do Carrinho: $total moedas</h2>
+                elseif($item['produto'] == "Sabonete Facial"){
+                    $imagem = "imagens/sabonete.jpeg";
+                }
 
-    <a href='comprar.php?finalizar=1'>
+                elseif($item['produto'] == "Hidratante Facial"){
+                    $imagem = "imagens/hidratante.jpeg";
+                }
 
-    <button>
+                elseif($item['produto'] == "Esfoliante Facial"){
+                    $imagem = "imagens/esfoliante.jpeg";
+                }
 
-    Finalizar Tudo
+                echo "
 
-    </button>
+                <div class='card'>
 
-    </a>
+                <img src='$imagem'
+                class='produto-img'>
 
-    ";
-}
+                <h3>".$item['produto']."</h3>
 
-?>
+                <p>".$item['preco']." moedas</p>
 
-</section>
+                <div class='botoes-produto'>
+
+                <a href='carrinho.php?comprar_item=$indice'>
+
+                <button>
+
+                Comprar Produto
+
+                </button>
+
+                </a>
+
+                <a href='carrinho.php?remover=$indice'>
+
+                <button class='comprar-agora'>
+
+                Remover
+
+                </button>
+
+                </a>
+
+                </div>
+
+                </div>
+
+                ";
+
+                $total += $item['preco'];
+            }
+
+        }else{
+
+            echo "<h2>Carrinho vazio</h2>";
+        }
+
+        ?>
+
+    </section>
+
+    <section class="quiz">
+
+        <?php
+
+        if(isset($_SESSION['carrinho']) &&
+        count($_SESSION['carrinho']) > 0){
+
+            echo "
+
+            <h2>Total do Carrinho: $total moedas</h2>
+
+            <a href='comprar.php?comprar_carrinho=1'>
+
+            <button>
+
+            Finalizar Tudo
+
+            </button>
+
+            </a>
+
+            ";
+        }
+
+        ?>
+
+    </section>
 
 </body>
 
