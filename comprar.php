@@ -1,22 +1,56 @@
 <?php
-session_start();
 
-if(!isset($_SESSION['carrinho'])){
-    $_SESSION['carrinho'] = [];
-}
+session_start();
 
 include("conexao.php");
 
+if(!isset($_SESSION['id'])){
+    header("Location: login.php");
+}
+
 $id = $_SESSION['id'];
 
-$sql = "SELECT * FROM usuarios
-        WHERE id = $id";
+$sql = "SELECT * FROM usuarios WHERE id = $id";
 
 $resultado = $conn->query($sql);
 
 $usuario = $resultado->fetch_assoc();
 
-/* QUIZ */
+/* FINALIZAR COMPRA */
+
+if(isset($_POST['finalizar'])){
+
+    $email = $_POST['email'];
+
+    $telefone = $_POST['telefone'];
+
+    $endereco = $_POST['endereco'];
+
+    $valorCompra = $_SESSION['valor_compra'];
+
+    if($usuario['moedas'] >= $valorCompra){
+
+        $novasMoedas = $usuario['moedas'] - $valorCompra;
+
+        $update = "UPDATE usuarios
+                   SET moedas = $novasMoedas
+                   WHERE id = $id";
+
+        $conn->query($update);
+
+        $mensagem = "Compra realizada com sucesso, seu produto está a caminho.";
+
+        unset($_SESSION['valor_compra']);
+
+    }else{
+
+        $mensagem = "Você não possui moedas suficientes.";
+
+    }
+
+}
+
+/* GANHAR XP E MOEDAS */
 
 if(isset($_GET['xp']) && isset($_GET['moedas'])){
 
@@ -24,28 +58,23 @@ if(isset($_GET['xp']) && isset($_GET['moedas'])){
 
     $moedas = $_GET['moedas'];
 
-    $novoXP = $usuario['xp'] + $xp;
+    $novoXp = $usuario['xp'] + $xp;
 
     $novasMoedas = $usuario['moedas'] + $moedas;
 
     $update = "UPDATE usuarios
-               SET xp = $novoXP,
+               SET xp = $novoXp,
                moedas = $novasMoedas
                WHERE id = $id";
 
     $conn->query($update);
 
-    echo "
-    <script>
-    alert('Você ganhou XP e moedas');
-    window.location='index.php';
-    </script>
-    ";
+    header("Location: index.php");
 }
 
 /* ADICIONAR AO CARRINHO */
 
-if(isset($_GET['produto']) && isset($_GET['preco'])){
+if(isset($_GET['produto'])){
 
     $produto = $_GET['produto'];
 
@@ -58,12 +87,7 @@ if(isset($_GET['produto']) && isset($_GET['preco'])){
 
     ];
 
-    echo "
-    <script>
-    alert('Produto adicionado ao carrinho');
-    window.location='index.php';
-    </script>
-    ";
+    header("Location: carrinho.php");
 }
 
 /* COMPRAR DIRETO */
@@ -74,70 +98,93 @@ if(isset($_GET['comprar_direto'])){
 
     if($usuario['moedas'] >= $preco){
 
-        $novoSaldo = $usuario['moedas'] - $preco;
-
-        $update = "UPDATE usuarios
-                   SET moedas = $novoSaldo
-                   WHERE id = $id";
-
-        $conn->query($update);
-
-        echo "
-        <script>
-        alert('Compra realizada com sucesso');
-        window.location='index.php';
-        </script>
-        ";
+        $_SESSION['valor_compra'] = $preco;
 
     }else{
 
         echo "
         <script>
-        alert('Moedas insuficientes');
-        window.location='index.php';
+            alert('Moedas insuficientes');
+            window.location='index.php';
         </script>
         ";
     }
 }
 
-/* FINALIZAR COMPRA */
-
-if(isset($_GET['finalizar'])){
-
-    $total = 0;
-
-    foreach($_SESSION['carrinho'] as $item){
-
-        $total += $item['preco'];
-    }
-
-    if($usuario['moedas'] >= $total){
-
-        $novoSaldo = $usuario['moedas'] - $total;
-
-        $update = "UPDATE usuarios
-                   SET moedas = $novoSaldo
-                   WHERE id = $id";
-
-        $conn->query($update);
-
-        $_SESSION['carrinho'] = [];
-
-        echo "
-        <script>
-        alert('Compra finalizada');
-        window.location='index.php';
-        </script>
-        ";
-
-    }else{
-
-        echo "
-        <script>
-        alert('Moedas insuficientes');
-        window.location='carrinho.php';
-        </script>
-        ";
-    }
-}
 ?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Finalizar Compra</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Finalizar Compra</h1>
+
+        <?php
+
+        if(isset($mensagem)){
+
+            echo "<h3 class='sucesso'>$mensagem</h3>";
+
+        }else{
+
+        ?>
+
+        <form method="POST">
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Digite seu e-mail"
+                required
+            >
+
+            <input
+                type="text"
+                name="telefone"
+                placeholder="Digite seu telefone"
+                required
+            >
+
+            <input
+                type="text"
+                name="endereco"
+                placeholder="Digite seu endereço"
+                required
+            >
+
+            <button name="finalizar">
+                Finalizar Compra
+            </button>
+
+        </form>
+
+        <?php } ?>
+
+        <br>
+
+        <a href="index.php">
+
+            <button>
+                Voltar ao Site
+            </button>
+
+        </a>
+
+    </div>
+
+</body>
+
+</html>
