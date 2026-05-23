@@ -367,4 +367,12 @@ footer{
         width:100%;
     }
 
+    .produto-zoom{
+    width:100%;
+    max-width:450px;
+    height:auto;
+    object-fit:contain;
+    margin-bottom:25px;
+}
+
 }
