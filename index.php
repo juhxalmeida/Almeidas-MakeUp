@@ -166,12 +166,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
     <section class="cards">
 
+        <!-- BASE -->
+
         <div class="card">
 
-            <img
-                src="imagens/base.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/base.jpeg" target="_blank">
+
+                <img
+                    src="imagens/base.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Base</h3>
 
@@ -193,7 +199,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=50">
+                <a href="finalizar.php?produto=Base&preco=50">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -205,12 +211,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- CORRETIVO -->
+
         <div class="card">
 
-            <img
-                src="imagens/corretivo.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/corretivo.jpeg" target="_blank">
+
+                <img
+                    src="imagens/corretivo.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Corretivo</h3>
 
@@ -232,7 +244,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=40">
+                <a href="finalizar.php?produto=Corretivo&preco=40">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -244,12 +256,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- GLOSS -->
+
         <div class="card">
 
-            <img
-                src="imagens/gloss.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/gloss.jpeg" target="_blank">
+
+                <img
+                    src="imagens/gloss.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Gloss</h3>
 
@@ -271,7 +289,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=30">
+                <a href="finalizar.php?produto=Gloss&preco=30">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -283,12 +301,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- PÓ -->
+
         <div class="card">
 
-            <img
-                src="imagens/po.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/po.jpeg" target="_blank">
+
+                <img
+                    src="imagens/po.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Pó Compacto</h3>
 
@@ -310,7 +334,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=60">
+                <a href="finalizar.php?produto=Po Compacto&preco=60">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -322,12 +346,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- SABONETE -->
+
         <div class="card">
 
-            <img
-                src="imagens/sabonete.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/sabonete.jpeg" target="_blank">
+
+                <img
+                    src="imagens/sabonete.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Sabão Facial</h3>
 
@@ -349,7 +379,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=45">
+                <a href="finalizar.php?produto=Sabonete Facial&preco=45">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -361,12 +391,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- HIDRATANTE -->
+
         <div class="card">
 
-            <img
-                src="imagens/hidratante.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/hidratante.jpeg" target="_blank">
+
+                <img
+                    src="imagens/hidratante.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Hidratante Facial</h3>
 
@@ -388,7 +424,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=70">
+                <a href="finalizar.php?produto=Hidratante Facial&preco=70">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -400,12 +436,18 @@ $quiz = $perguntas[array_rand($perguntas)];
 
         </div>
 
+        <!-- ESFOLIANTE -->
+
         <div class="card">
 
-            <img
-                src="imagens/esfoliante.jpeg"
-                class="produto-img"
-            >
+            <a href="imagens/esfoliante.jpeg" target="_blank">
+
+                <img
+                    src="imagens/esfoliante.jpeg"
+                    class="produto-img"
+                >
+
+            </a>
 
             <h3>Esfoliante Facial</h3>
 
@@ -427,7 +469,7 @@ $quiz = $perguntas[array_rand($perguntas)];
 
                 </a>
 
-                <a href="comprar.php?comprar_direto=1&preco=80">
+                <a href="finalizar.php?produto=Esfoliante Facial&preco=80">
 
                     <button class="comprar-agora">
                         Comprar Agora
@@ -463,7 +505,7 @@ $quiz = $perguntas[array_rand($perguntas)];
                 echo "
 
                 <a href='comprar.php?xp=".$quiz['xp']."
-                &moedas=".$quiz['moedas']."'>
+                &moedas=".$quiz['moedas']."'> 
 
                 <button>
 
