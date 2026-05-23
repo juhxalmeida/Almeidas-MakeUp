@@ -23,7 +23,7 @@ $perguntas = [
 
     [
         "pergunta" => "Qual produto hidrata os lábios?",
-        "opcoes" => ["Gloss", "Base", "Pó compacto"],
+        "opcoes" => ["Base", "Gloss", "Pó compacto"],
         "correta" => "Gloss",
         "dificuldade" => "Fácil",
         "xp" => 10,
@@ -41,7 +41,7 @@ $perguntas = [
 
     [
         "pergunta" => "Qual produto ajuda na remoção de células mortas da pele?",
-        "opcoes" => ["Esfoliante Facial", "Base", "Gloss"],
+        "opcoes" => ["Gloss", "Base", "Esfoliante Facial"],
         "correta" => "Esfoliante Facial",
         "dificuldade" => "Difícil",
         "xp" => 40,
@@ -50,7 +50,7 @@ $perguntas = [
 
     [
         "pergunta" => "Qual produto ajuda a uniformizar o tom da pele?",
-        "opcoes" => ["Base", "Sabonete", "Gloss"],
+        "opcoes" => ["Sabonete", "Base", "Gloss"],
         "correta" => "Base",
         "dificuldade" => "Fácil",
         "xp" => 10,
@@ -64,11 +64,62 @@ $perguntas = [
         "dificuldade" => "Médio",
         "xp" => 20,
         "moedas" => 30
-    ]
+    ],
+    [
+    "pergunta" => "Qual produto é ideal para limpar profundamente a pele?",
+    "opcoes" => ["Sabonete Facial", "Gloss", "Pó Compacto"],
+    "correta" => "Sabonete Facial",
+    "dificuldade" => "Fácil",
+    "xp" => 10,
+    "moedas" => 15
+    ],
+
+    [
+    "pergunta" => "Qual produto é utilizado para esconder olheiras e imperfeições?",
+    "opcoes" => ["Gloss", "Corretivo", "Esfoliante Facial"],
+    "correta" => "Corretivo",
+    "dificuldade" => "Médio",
+    "xp" => 20,
+    "moedas" => 30
+    ],
+
+    [
+    "pergunta" => "Qual produto ajuda a manter a pele hidratada e saudável diariamente?",
+    "opcoes" => ["Pó Compacto", "Base", "Hidratante Facial"],
+    "correta" => "Hidratante Facial",
+    "dificuldade" => "Difícil",
+    "xp" => 40,
+    "moedas" => 50
+    ],
 
 ];
 
-$quiz = $perguntas[array_rand($perguntas)];
+if(!isset($_SESSION['perguntas_usadas'])){
+    $_SESSION['perguntas_usadas'] = [];
+}
+
+$disponiveis = [];
+
+foreach($perguntas as $indice => $pergunta){
+
+    if(!in_array($indice, $_SESSION['perguntas_usadas'])){
+
+        $disponiveis[$indice] = $pergunta;
+    }
+}
+
+if(count($disponiveis) == 0){
+
+    $_SESSION['perguntas_usadas'] = [];
+
+    $disponiveis = $perguntas;
+}
+
+$indiceQuiz = array_rand($disponiveis);
+
+$quiz = $disponiveis[$indiceQuiz];
+
+$_SESSION['perguntas_usadas'][] = $indiceQuiz;
 
 ?>
 
