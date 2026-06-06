@@ -1,0 +1,16 @@
+{
+  "name": "Almeida's MakeUp",
+  "short_name": "MakeUp",
+  "start_url": "/almeidas-makeup/",
+  "scope": "/almeidas-makeup/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#63dfff",
+  "icons": [
+    {
+      "src": "logo-app.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
