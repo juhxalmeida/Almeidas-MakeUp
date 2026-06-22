@@ -109,7 +109,7 @@ button{
     transition:0.3s;
 }
 
-button:hover{
+button:hover{ /*pra quando passar o mouse, ele aumenta levemente o tamanho*/
     transform:scale(1.05);
 }
 
@@ -154,7 +154,7 @@ button:hover{
     box-shadow:0 4px 15px rgba(0,0,0,0.1);
 }
 
-.infos{
+.infos{ /*exemplo: nome e nivel do usuário*/
     display:flex;
     justify-content:space-between;
     margin-top:15px;
@@ -177,7 +177,7 @@ button:hover{
 
 /* PRODUTOS */
 
-.cards{
+.cards{ /*coloca os produtos lado a lado*/
     display:flex;
     justify-content:center;
     gap:30px;
@@ -265,7 +265,7 @@ button:hover{
     margin:10px;
 }
 
-/* SOBRE */
+/* SOBRE A EMPRESA */
 
 .sobre-container{
     width:90%;
@@ -334,14 +334,14 @@ button:hover{
 
 /* FOOTER */
 
-footer{
+footer{ /*centraliza o texto do radapé*/
     text-align:center;
     padding:30px;
     color:#111;
     font-weight:600;
 }
 
-/* RESPONSIVO */
+/* RESPONSIVO */ /*para as abas ficarem adaptáveis pra celular ou computadores*/
 
 @media(max-width:768px){
 
@@ -375,4 +375,163 @@ footer{
     margin-bottom:25px;
 }
 
+}
+
+/* BONEQUINHA */
+
+#mascote{
+    display:flex;
+    align-items:center;
+}
+
+#glossBot{
+    width:60px;
+    height:auto;
+    cursor:pointer;
+    transition:0.3s;
+    animation:flutuar 2s infinite ease-in-out;
+}
+
+#glossBot:hover{
+    transform:scale(1.1);
+}
+
+@keyframes flutuar{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-5px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}
+
+/* CHATBOT */
+
+#chatbot{
+   position:fixed;
+   bottom:150px;
+   right:20px;
+   width:320px;
+   background:white;
+   border-radius:20px;
+   padding:20px;
+   display:none;
+   box-shadow:0 4px 15px rgba(0,0,0,0.2);
+   z-index:9999;
+}
+
+.chat-header{
+   font-size:20px;
+   font-weight:bold;
+   margin-bottom:15px;
+}
+
+#pergunta{
+   width:100%;
+   margin-top:15px;
+}
+
+#resposta{
+   min-height:80px;
+   line-height:1.5;
+}
+
+#mensagens{
+    height:250px;
+    overflow-y:auto;
+    margin-bottom:15px;
+}
+
+.mensagem-bot{
+    background:#e9f7ff;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:10px;
+    max-width:80%;
+}
+
+.mensagem-user{
+    background:#63dfff;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:10px;
+    margin-left:auto;
+    max-width:80%;
+}
+
+/* FORUM */
+
+.forum{
+    width:90%;
+    max-width:1000px;
+    margin:60px auto;
+    background:rgba(255,255,255,0.45);
+    padding:35px;
+    border-radius:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.forum h2{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:32px;
+}
+
+.forum textarea{
+    width:100%;
+    min-height:120px;
+    padding:18px;
+    border:none;
+    border-radius:18px;
+    background:white;
+    font-size:16px;
+    resize:none;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.forum button{
+    margin-top:15px;
+}
+
+.postagem{
+    background:white;
+    margin-top:20px;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.postagem h4{
+    color:#00a8d8;
+    font-size:18px;
+    margin-bottom:5px;
+}
+
+.postagem small{
+    color:#777;
+    display:block;
+    margin-bottom:12px;
+}
+
+.postagem p{
+    font-size:16px;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+.postagem a{
+    text-decoration:none;
+}
+
+.postagem a button{
+    margin-top:15px;
+    background:#ff6b6b;
+    color:white;
 }
