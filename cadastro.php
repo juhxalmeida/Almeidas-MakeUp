@@ -9,7 +9,7 @@ if(isset($_POST['cadastrar'])){
 
     $senha = password_hash(
         $_POST['senha'],
-        PASSWORD_DEFAULT
+        PASSWORD_DEFAULT //deixa a senha criptografada (linhas 10, 11 e 12)
     );
 
     $sql = "INSERT INTO usuarios(nome,email,senha)
@@ -17,7 +17,8 @@ if(isset($_POST['cadastrar'])){
 
     $conn->query($sql);
 
-    header("Location: login.php");
+    header("Location: login.php?cadastro=sucesso");
+exit(); //localiza que os dados cadastrados vão pra pagina de login
 }
 
 ?>
