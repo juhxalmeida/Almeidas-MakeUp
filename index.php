@@ -17,82 +17,117 @@ $resultado = $conn->query($sql);
 
 $usuario = $resultado->fetch_assoc();
 
+if(isset($_POST['publicar']) || isset($_POST['responder'])){
+
+    $mensagem = $conn->real_escape_string($_POST['mensagem']);
+    $usuarioForum = $usuario['nome'];
+
+    $idResposta = isset($_POST['id_resposta'])
+        ? (int) $_POST['id_resposta']
+        : NULL;
+
+    $conn->query("
+        INSERT INTO forum(usuario, mensagem, id_resposta)
+        VALUES('$usuarioForum', '$mensagem', ".($idResposta ? $idResposta : "NULL").")
+    ");
+
+    header("Location: index.php");
+    exit();
+}
+
+/* EXCLUIR POSTAGEM */
+
+if(isset($_GET['excluir'])){
+
+    $idPost = (int) $_GET['excluir'];
+
+    $conn->query("
+    DELETE FROM forum
+    WHERE id = $idPost
+    ");
+
+    header("Location: index.php");
+    exit();
+}
+
 /* QUIZ DINÂMICO */
 
 $perguntas = [
 
     [
-        "pergunta" => "Qual produto hidrata os lábios?",
-        "opcoes" => ["Base", "Gloss", "Pó compacto"],
-        "correta" => "Gloss",
+        "pergunta" => "O que significa quando uma base possui cobertura construível?",
+        "opcoes" => ["É resistente à água", "Pode ter a cobertura aumentada em camadas", "Tem proteção solar"],
+        "correta" => "Pode ter a cobertura aumentada em camadas",
         "dificuldade" => "Fácil",
-        "xp" => 10,
+        "xp" => 8,
         "moedas" => 15
     ],
 
     [
-        "pergunta" => "Qual produto é usado antes da maquiagem para hidratar a pele?",
-        "opcoes" => ["Hidratante Facial", "Gloss", "Corretivo"],
-        "correta" => "Hidratante Facial",
-        "dificuldade" => "Médio",
-        "xp" => 20,
-        "moedas" => 30
-    ],
-
-    [
-        "pergunta" => "Qual produto ajuda na remoção de células mortas da pele?",
-        "opcoes" => ["Gloss", "Base", "Esfoliante Facial"],
-        "correta" => "Esfoliante Facial",
+        "pergunta" => "Qual ingrediente é frequentemente utilizado para proporcionar hidratação aos lábios em glosses modernos?",
+        "opcoes" => ["Ácido salicílico", "Ácido hialurônico", "Peróxido de benzoíla"],
+        "correta" => "Ácido hialurônico",
         "dificuldade" => "Difícil",
-        "xp" => 40,
-        "moedas" => 50
+        "xp" => 37,
+        "moedas" => 48
     ],
 
     [
-        "pergunta" => "Qual produto ajuda a uniformizar o tom da pele?",
-        "opcoes" => ["Sabonete", "Base", "Gloss"],
-        "correta" => "Base",
-        "dificuldade" => "Fácil",
-        "xp" => 10,
-        "moedas" => 15
-    ],
-
-    [
-        "pergunta" => "Qual produto reduz a oleosidade e sela a maquiagem?",
-        "opcoes" => ["Pó Compacto", "Gloss", "Hidratante"],
-        "correta" => "Pó Compacto",
+        "pergunta" => "Qual componente é frequentemente utilizado para absorver a oleosidade em pós compactos?",
+        "opcoes" => ["Colágeno", "Glicerina", "Sílica"],
+        "correta" => "Sílica",
         "dificuldade" => "Médio",
-        "xp" => 20,
+        "xp" => 35,
         "moedas" => 30
     ],
+
     [
-    "pergunta" => "Qual produto é ideal para limpar profundamente a pele?",
-    "opcoes" => ["Sabonete Facial", "Gloss", "Pó Compacto"],
-    "correta" => "Sabonete Facial",
-    "dificuldade" => "Fácil",
-    "xp" => 10,
-    "moedas" => 15
+        "pergunta" => "Qual corretivo é frequentemente utilizado para neutralizar olheiras arroxeadas?",
+        "opcoes" => ["Amarelado", "verde", "salmão"],
+        "correta" => "Amarelado",
+        "dificuldade" => "Fácil",
+        "xp" => 10,
+        "moedas" => 20
     ],
 
     [
-    "pergunta" => "Qual produto é utilizado para esconder olheiras e imperfeições?",
-    "opcoes" => ["Gloss", "Corretivo", "Esfoliante Facial"],
-    "correta" => "Corretivo",
-    "dificuldade" => "Médio",
-    "xp" => 20,
-    "moedas" => 30
+        "pergunta" => "Esfoliantes químicos normalmente utilizam quais compostos?",
+        "opcoes" => ["Silicone e Colágeno", "Ácidos como AHA e BHA", "Somente Queratina"],
+        "correta" => "Ácidos como AHA e BHA",
+        "dificuldade" => "Médio",
+        "xp" => 45,
+        "moedas" => 48
+    ],
+    [
+    "pergunta" => "Qual componente da pele pode ser comprometido pelo uso frequente de sabonetes com pH muito alcalino?",
+    "opcoes" => ["Barreira hidrolipídica", "Melanina", "Colágeno profundo"],
+    "correta" => "Barreira hidrolipídica",
+    "dificuldade" => "Difícil",
+    "xp" => 52,
+    "moedas" => 55
     ],
 
     [
-    "pergunta" => "Qual produto ajuda a manter a pele hidratada e saudável diariamente?",
-    "opcoes" => ["Pó Compacto", "Base", "Hidratante Facial"],
-    "correta" => "Hidratante Facial",
+    "pergunta" => "Qual mecanismo explica a ação do ácido hialurônico em hidratantes faciais?",
+    "opcoes" => ["Remoção das células mortas da pele", "Estímulo direto à produção de melanina", "Capacidade higroscópica de atrair e reter moléculas de água"],
+    "correta" => "Capacidade higroscópica de atrair e reter moléculas de água",
     "dificuldade" => "Difícil",
     "xp" => 40,
-    "moedas" => 50
+    "moedas" => 47
+    ],
+
+   [
+    "pergunta" => "Em formulações hidratantes, os umectantes têm como principal função:",
+    "opcoes" => ["Fotossensibilização Dérmica", "Atrair água para a camada córnea da pele", "Absorver oleosidade"],
+    "correta" => "Atrair água para a camada córnea da pele",
+    "dificuldade" => "Difícil",
+    "xp" => 36,
+    "moedas" => 45
     ],
 
 ];
+
+//não deixa as perguntas se repetirem até elas acabarem, e se acabar volta do inicio
 
 if(!isset($_SESSION['perguntas_usadas'])){
     $_SESSION['perguntas_usadas'] = [];
@@ -132,7 +167,7 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
 
     <title>Almeida's MakeUp</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 
     <link rel="icon" href="logo-app.png">
 
@@ -144,6 +179,45 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
         rel="stylesheet"
     >
+
+    <style>
+.parceiros{
+    width:100%;
+    overflow:hidden;
+    margin:50px 0;
+}
+
+.esteira{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+}
+
+.track{
+    display:flex;
+    gap:40px;
+    width:max-content;
+    animation: scroll 20s linear infinite;
+    align-items:center;
+}
+
+.track img{
+    width:180px;
+    height:90px;
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+/* ANIMAÇÃO DA ESTEIRA */
+@keyframes scroll {
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-50%);
+    }
+}
+</style>
 
 </head>
 
@@ -164,24 +238,17 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
 
         <div class="menu-direita">
 
-            <a href="carrinho.php" class="carrinho-link">
+        <div id="mascote">
+            <img
+                src="imagens/juju.png"
+                id="glossBot"
+                alt="Juju"
+            >
+        </div>
 
-                🛒 Carrinho
-
-                <?php
-
-                if(isset($_SESSION['carrinho'])){
-
-                    echo "(" . count($_SESSION['carrinho']) . ")";
-
-                }else{
-
-                    echo "(0)";
-                }
-
-                ?>
-
-            </a>
+        <a href="carrinho.php" class="carrinho-link">
+             Carrinho
+        </a>
 
             <a href="logout.php">
                 Sair
@@ -555,7 +622,7 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
 
         <?php
 
-        foreach($quiz['opcoes'] as $opcao){
+        foreach($quiz['opcoes'] as $opcao){ //foreach: laço de repetição dos arrays
 
             if($opcao == $quiz['correta']){
 
@@ -599,6 +666,43 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
         </p>
 
     </footer>
+
+    </section> <!-- fim do quiz -->
+
+<!-- ANÚNCIOS -->
+
+<section class="parceiros">
+
+<h1>Nossos parceiros:</h1>
+
+<div class="esteira">
+
+    <div class="track">
+
+        <img src="imagens/dior.png">
+        <img src="imagens/vizzela.png">
+        <img src="imagens/rubyrose.png">
+        <img src="imagens/lancome.png">
+        <img src="imagens/maxlove.png">
+        <img src="imagens/vult.png">
+        <img src="imagens/fenzza.png">
+
+        <!-- DUPLICA OS MESMOS PRA LOOP INFINITO -->
+        <img src="imagens/dior.png">
+        <img src="imagens/vizzela.png">
+        <img src="imagens/rubyrose.png">
+        <img src="imagens/lancome.png">
+        <img src="imagens/maxlove.png">
+        <img src="imagens/vult.png">
+        <img src="imagens/fenzza.png">
+
+    </div>
+
+</div>
+
+</section>
+
+<section class="sobre-container">
 
     <section class="sobre-container">
 
@@ -680,6 +784,371 @@ $_SESSION['perguntas_usadas'][] = $indiceQuiz;
         </a>
 
     </section>
+
+    <section
+    class="forum"
+    style="
+    width:90%;
+    max-width:1000px;
+    margin:60px auto;
+    background:rgba(255,255,255,0.45);
+    padding:35px;
+    border-radius:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    ">
+
+    <h2>Fórum da Comunidade!</h2>
+
+    <form method="POST">
+
+        <textarea name="mensagem"
+    placeholder="Compartilhe uma dica ou faça uma pergunta..."
+    required
+    style="
+    width:100%;
+    height:120px;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    font-size:16px;
+    margin-bottom:15px;
+    "
+    ></textarea>
+
+        <button type="submit" name="publicar">
+            Publicar
+        </button>
+
+    </form>
+
+    <?php
+
+$postagens = $conn->query("
+SELECT *
+FROM forum
+WHERE id_resposta IS NULL
+ORDER BY data_postagem DESC
+");
+
+while($post = $postagens->fetch_assoc()){
+
+    $idPost = (int) $post['id'];
+
+?>
+
+<div class="postagem">
+
+    <h4>
+        <?php echo $post['usuario']; ?>
+    </h4>
+
+    <small>
+        <?php echo date(
+            "d/m/Y H:i",
+            strtotime($post['data_postagem']) - 3 * 3600
+        ); ?>
+    </small>
+
+    <p>
+        <?php echo $post['mensagem']; ?>
+    </p>
+
+    <!-- FORMULÁRIO DE RESPOSTA -->
+    <form method="POST" style="margin-top:10px;">
+        <input type="hidden" name="id_resposta" value="<?php echo $post['id']; ?>">
+
+        <input type="text" name="mensagem" placeholder="Responder..." required>
+
+        <button type="submit" name="responder">
+            Responder
+        </button>
+    </form>
+
+    <!-- RESPOSTAS -->
+    <?php
+    $respostas = $conn->query("
+        SELECT *
+        FROM forum
+        WHERE id_resposta = $idPost
+        ORDER BY data_postagem ASC
+    ");
+
+    if($respostas->num_rows > 0){
+
+        while($resp = $respostas->fetch_assoc()){
+    ?>
+
+        <div style="
+            margin-left:30px;
+            margin-top:10px;
+            padding:10px;
+            background:#f5f5f5;
+            border-radius:10px;
+        ">
+            <strong><?php echo $resp['usuario']; ?></strong><br>
+            <?php echo $resp['mensagem']; ?>
+        </div>
+
+    <?php
+        }
+    }
+    ?>
+
+    <?php if($post['usuario'] == $usuario['nome']){ ?>
+
+        <a
+            href="index.php?excluir=<?php echo $post['id']; ?>"
+            onclick="return confirm('Excluir comentário?')"
+        >
+            <button>Excluir</button>
+        </a>
+
+    <?php } ?>
+
+</div>
+
+<?php } ?>
+
+<div id="chatbot" style="display:none;">
+
+    <div class="chat-header">
+        💄 Juju Assistente!
+    </div>
+
+    <div id="mensagens">
+
+        <div class="mensagem-bot">
+            Olá! Sou a JujuGloss. Como posso ajudar?
+        </div>
+
+    </div>
+
+    <input
+        type="text"
+        id="pergunta"
+        placeholder="Digite sua pergunta..."
+    >
+
+    <button onclick="responder()">
+        Enviar
+    </button>
+
+</div>
+
+<script>
+
+const glossBot = document.getElementById("glossBot");
+const chatbot = document.getElementById("chatbot");
+
+console.log(glossBot);
+console.log(chatbot);
+
+glossBot.addEventListener("click", ()=>{
+
+    if(chatbot.style.display == "block"){
+
+        chatbot.style.display = "none";
+
+    }else{
+
+        chatbot.style.display = "block";
+
+    }
+
+});
+
+const respostas = {
+
+"base":
+"A base é utilizada para uniformizar o tom da pele e criar uma aparência mais homogênea.",
+
+"base matte":
+"A base matte possui acabamento sem brilho e é muito indicada para peles oleosas.",
+
+"base glow":
+"A base glow proporciona um acabamento luminoso e radiante à pele.",
+
+"corretivo":
+"O corretivo ajuda a disfarçar olheiras, manchas e pequenas imperfeições.",
+
+"olheiras":
+"Corretivos amarelados costumam ajudar a neutralizar olheiras arroxeadas.",
+
+"gloss":
+"O gloss proporciona brilho aos lábios e pode conter ingredientes hidratantes.",
+
+"pó compacto":
+"O pó compacto ajuda a selar a maquiagem e controlar a oleosidade.",
+
+"po compacto":
+"O pó compacto ajuda a selar a maquiagem e controlar a oleosidade.",
+
+"hidratante":
+"O hidratante ajuda a manter a pele saudável e reduz a perda de água.",
+
+"ácido hialurônico":
+"O ácido hialurônico possui grande capacidade de atrair e reter água na pele.",
+
+"acido hialuronico":
+"O ácido hialurônico possui grande capacidade de atrair e reter água na pele.",
+
+"sabonete facial":
+"O sabonete facial remove impurezas, suor, oleosidade e resíduos acumulados na pele.",
+
+"manto ácido":
+"O manto ácido é uma camada protetora natural que ajuda a proteger a pele.",
+
+"manto acido":
+"O manto ácido é uma camada protetora natural que ajuda a proteger a pele.",
+
+"esfoliante":
+"O esfoliante remove células mortas e promove renovação da pele.",
+
+"pele oleosa":
+"Peles oleosas costumam se beneficiar de produtos com acabamento matte e controle de brilho.",
+
+"pele seca":
+"Peles secas normalmente precisam de maior hidratação e produtos mais nutritivos.",
+
+"acne":
+"A acne é causada por diversos fatores, incluindo excesso de oleosidade e obstrução dos poros.",
+
+"protetor solar":
+"O protetor solar ajuda a proteger a pele contra os danos causados pela radiação UV.",
+
+"skincare":
+"Skincare é o conjunto de cuidados realizados para manter a saúde e a aparência da pele.",
+
+"limpeza de pele":
+"A limpeza da pele ajuda a remover impurezas e preparar a pele para outros produtos.",
+
+"poros":
+"Os poros são pequenas aberturas da pele responsáveis pela saída de suor e oleosidade.",
+
+"maquiagem":
+"A maquiagem pode ser utilizada para realçar características faciais e expressar estilo pessoal.",
+
+"pele sensível":
+"Peles sensíveis exigem produtos suaves e com menor potencial irritante.",
+
+"pele sensivel":
+"Peles sensíveis exigem produtos suaves e com menor potencial irritante.",
+
+"primer":
+"O primer ajuda a preparar a pele antes da maquiagem e pode aumentar sua durabilidade.",
+
+"contorno":
+"O contorno é utilizado para criar profundidade e definição em determinadas áreas do rosto.",
+
+"iluminador":
+"O iluminador destaca pontos estratégicos do rosto refletindo a luz.",
+
+"blush":
+"O blush adiciona cor e aspecto saudável às maçãs do rosto.",
+
+"máscara de cílios":
+"A máscara de cílios ajuda a destacar os cílios, proporcionando volume e definição.",
+
+"mascara de cilios":
+"A máscara de cílios ajuda a destacar os cílios, proporcionando volume e definição.",
+
+"batom":
+"O batom é utilizado para colorir e valorizar os lábios.",
+
+"demaquilante":
+"O demaquilante auxilia na remoção da maquiagem ao final do dia.",
+
+"barreira hidrolipídica":
+"A barreira hidrolipídica protege a pele contra agressões externas e perda excessiva de água.",
+
+"barreira hidrolipidica":
+"A barreira hidrolipídica protege a pele contra agressões externas e perda excessiva de água.",
+
+"tewl":
+"TEWL significa perda transepidérmica de água, um processo natural da pele.",
+
+"umectantes":
+"Umectantes são ingredientes que atraem água para as camadas superficiais da pele.",
+
+"surfactantes":
+"Surfactantes são responsáveis pela ação de limpeza presente em sabonetes e produtos de higiene.",
+
+"subtom":
+"O subtom da pele influencia na escolha correta da tonalidade da base.",
+
+"pele mista":
+"A pele mista apresenta áreas mais oleosas e outras mais secas.",
+
+"cruelty free":
+"Produtos cruelty free não são testados em animais.",
+
+"vegano":
+"Produtos veganos não possuem ingredientes de origem animal.",
+
+"fps":
+"FPS significa Fator de Proteção Solar.",
+
+"uva":
+"Os raios UVA estão relacionados ao envelhecimento precoce da pele.",
+
+"uvb":
+"Os raios UVB estão mais associados às queimaduras solares.",
+
+"retinol":
+"O retinol é um derivado da vitamina A utilizado em cuidados com a pele.",
+
+"vitamina c":
+"A vitamina C é um antioxidante muito utilizado para uniformizar e iluminar a pele.",
+
+"niacinamida":
+"A niacinamida auxilia no controle da oleosidade e fortalecimento da barreira cutânea."
+
+};
+
+function responder(){
+
+    let pergunta =
+    document.getElementById("pergunta")
+    .value.toLowerCase();
+
+    if(pergunta == "") return;
+
+    let resposta =
+    "Desculpe, ainda não sei responder essa pergunta.";
+
+    for(let palavra in respostas){
+
+        if(pergunta.includes(palavra)){
+
+            resposta = respostas[palavra];
+            break;
+
+        }
+
+    }
+
+    let mensagens =
+    document.getElementById("mensagens");
+
+    mensagens.innerHTML +=
+    "<div class='mensagem-user'>"+
+    pergunta+
+    "</div>";
+
+    mensagens.innerHTML +=
+    "<div class='mensagem-bot'>"+
+    resposta+
+    "</div>";
+
+    document.getElementById("pergunta").value="";
+
+    mensagens.scrollTop =
+    mensagens.scrollHeight;
+
+}
+
+</script>
+
 
 </body>
 
